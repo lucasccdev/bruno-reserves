@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/barberbook
+    username: barberbook_user
+    password: barberbook_pass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+resend:
+  api-key: re_7hGLJbMC_38xAqxFw91mB24mZG3d5thSn
+  from: Barbería <onboarding@resend.dev>

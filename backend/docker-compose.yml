@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: barberbook-db
+    environment:
+      POSTGRES_DB: reserves
+      POSTGRES_USER: barberbook_user
+      POSTGRES_PASSWORD: barberbook_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - barberbook_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U barberbook_user -d reserves"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: barberbook-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/reserves
+      SPRING_DATASOURCE_USERNAME: barberbook_user
+      SPRING_DATASOURCE_PASSWORD: barberbook_pass
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  barberbook_data:
